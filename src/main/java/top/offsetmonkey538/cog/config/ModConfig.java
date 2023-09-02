@@ -21,8 +21,13 @@ import top.offsetmonkey538.monkeyconfig538.serializer.ConfigSerializer;
 
 public class ModConfig extends Config {
 
-    @Comment("A block (or block tag) and its probability of being generated. The higher the probability, the more of that block (tag) is going to be generated.")
+    @Comment("\nA block (or block tag) and its probability of being generated.\nThe higher the probability, the more likely that that block (tag) is going to be generated.\nYou can reset to default values by deleting the config file.")
     public Map<BlockEntry, Integer> generatableBlocks = new HashMap<>();
+
+    public static final Map<BlockEntry, Integer> DEFAULT = Map.of(
+            new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier("c:ores"))), 25,
+            new BlockEntry(Blocks.COBBLESTONE), 75
+    );
 
 
     public static class BlockEntry {

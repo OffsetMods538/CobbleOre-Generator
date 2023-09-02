@@ -20,6 +20,11 @@ public class CobbleOreGenerator implements ModInitializer {
     @Override
     public void onInitialize() {
         ConfigManager.init(new ModConfig(), MOD_ID);
+        ConfigManager.load(MOD_ID);
+        if (config().generatableBlocks.isEmpty()) {
+            config().generatableBlocks = ModConfig.DEFAULT;
+        }
+        ConfigManager.save(MOD_ID);
     }
 
     public static Block getRandomBlockFromConfig() {

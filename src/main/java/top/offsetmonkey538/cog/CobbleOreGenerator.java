@@ -23,12 +23,12 @@ public class CobbleOreGenerator implements ModInitializer {
     }
 
     public static Block getRandomBlockFromConfig() {
-        if (config().ores.isEmpty()) return Blocks.COBBLESTONE;
-        int probabilitySum = config().ores.values().stream().mapToInt(Integer::intValue).sum();
+        if (config().generatableBlocks.isEmpty()) return Blocks.COBBLESTONE;
+        int probabilitySum = config().generatableBlocks.values().stream().mapToInt(Integer::intValue).sum();
         int randomNum = random.nextInt(probabilitySum);
 
         int partialSum = 0;
-        for (Map.Entry<ModConfig.BlockEntry, Integer> entry : config().ores.entrySet()) {
+        for (Map.Entry<ModConfig.BlockEntry, Integer> entry : config().generatableBlocks.entrySet()) {
             partialSum += entry.getValue();
             if (partialSum < randomNum) continue;
 

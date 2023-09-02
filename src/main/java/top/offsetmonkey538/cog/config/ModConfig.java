@@ -20,7 +20,9 @@ import top.offsetmonkey538.monkeyconfig538.serializer.ConfigSerializer;
 
 public class ModConfig extends Config {
 
-    public Map<BlockEntry, Integer> ores = new HashMap<>();
+    public Map<BlockEntry, Integer> generatableBlocks = new HashMap<>();
+
+
     public static class BlockEntry {
         public TagKey<Block> tag = null;
         public Block block = null;

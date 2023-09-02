@@ -1,5 +1,6 @@
 package top.offsetmonkey538.cog.config;
 
+import blue.endless.jankson.Comment;
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.api.Marshaller;
@@ -20,6 +21,7 @@ import top.offsetmonkey538.monkeyconfig538.serializer.ConfigSerializer;
 
 public class ModConfig extends Config {
 
+    @Comment("A block (or block tag) and its probability of being generated. The higher the probability, the more of that block (tag) is going to be generated.")
     public Map<BlockEntry, Integer> generatableBlocks = new HashMap<>();
 
 

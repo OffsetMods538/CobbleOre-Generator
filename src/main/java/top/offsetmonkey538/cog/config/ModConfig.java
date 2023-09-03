@@ -11,11 +11,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import top.offsetmonkey538.monkeyconfig538.Config;
 import top.offsetmonkey538.monkeyconfig538.serializer.ConfigSerializer;
 
@@ -25,7 +24,7 @@ public class ModConfig extends Config {
     public Map<BlockEntry, Integer> generatableBlocks = new HashMap<>();
 
     public static final Map<BlockEntry, Integer> DEFAULT = Map.of(
-            new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier("c:ores"))), 25,
+            new BlockEntry(TagKey.of(Registry.BLOCK_KEY, new Identifier("c:ores"))), 25,
             new BlockEntry(Blocks.COBBLESTONE), 75
     );
 
@@ -42,11 +41,11 @@ public class ModConfig extends Config {
         }
 
         public List<Block> getBlocks() {
-            if (tag != null) return Registries.BLOCK.getOrCreateEntryList(tag).stream()
+            if (tag != null) return Registry.BLOCK.getOrCreateEntryList(tag).stream()
                     .map(RegistryEntry::getKey)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .map(Registries.BLOCK::get)
+                    .map(Registry.BLOCK::get)
                     .collect(Collectors.toList());
             if (block != null) return List.of(block);
             return List.of(Blocks.AIR);
@@ -60,7 +59,7 @@ public class ModConfig extends Config {
         @Override
         public String toString() {
             if (tag != null) return "#" + tag.id();
-            if (block != null) return Registries.BLOCK.getId(block).toString();
+            if (block != null) return Registry.BLOCK.getId(block).toString();
             return "";
         }
 
@@ -75,8 +74,8 @@ public class ModConfig extends Config {
             public BlockEntry fromJson(JsonElement json, Marshaller marshaller) {
                 final String value = marshaller.marshall(String.class, json);
 
-                if (value.startsWith("#")) return new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier(value.substring(1))));
-                if (Registries.BLOCK.containsId(new Identifier(value))) return new BlockEntry(Registries.BLOCK.get(new Identifier(value)));
+                if (value.startsWith("#")) return new BlockEntry(TagKey.of(Registry.BLOCK_KEY, new Identifier(value.substring(1))));
+                if (Registry.BLOCK.containsId(new Identifier(value))) return new BlockEntry(Registry.BLOCK.get(new Identifier(value)));
                 return null;
             }
         }

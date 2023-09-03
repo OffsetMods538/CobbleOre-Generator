@@ -52,6 +52,11 @@ public class ModConfig extends Config {
             return List.of(Blocks.AIR);
         }
 
+        /*
+            The BlockEntry class is being used as the key for a map,
+            and when Jankson serializes a map to json, it uses `key.toString()`
+            so this is needed instead of `Serializer.toJson`.
+         */
         @Override
         public String toString() {
             if (tag != null) return "#" + tag.id();

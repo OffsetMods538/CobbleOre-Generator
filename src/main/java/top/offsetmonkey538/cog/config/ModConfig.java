@@ -3,7 +3,6 @@ package top.offsetmonkey538.cog.config;
 import blue.endless.jankson.Comment;
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonElement;
-import blue.endless.jankson.api.Marshaller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +15,9 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import top.offsetmonkey538.monkeyconfig538.Config;
-import top.offsetmonkey538.monkeyconfig538.serializer.ConfigSerializer;
+import top.offsetmonkey538.monkeylib538.config.Config;
+
+import static top.offsetmonkey538.cog.CobbleOreGenerator.MOD_ID;
 
 public class ModConfig extends Config {
 
@@ -63,29 +63,24 @@ public class ModConfig extends Config {
             if (block != null) return Registries.BLOCK.getId(block).toString();
             return "";
         }
-
-        public static class Serializer implements ConfigSerializer<BlockEntry> {
-
-            @Override
-            public JsonElement toJson(BlockEntry value, Marshaller marshaller) {
-                return marshaller.serialize(value.toString());
-            }
-
-            @Override
-            public BlockEntry fromJson(JsonElement json, Marshaller marshaller) {
-                final String value = marshaller.marshall(String.class, json);
-
-                if (value.startsWith("#")) return new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier(value.substring(1))));
-                if (Registries.BLOCK.containsId(new Identifier(value))) return new BlockEntry(Registries.BLOCK.get(new Identifier(value)));
-                return null;
-            }
-        }
     }
 
     @Override
     protected Jankson.Builder configureJankson(Jankson.Builder builder) {
-        this.registerSerializer(builder, BlockEntry.class, new BlockEntry.Serializer());
+        builder.registerSerializer(BlockEntry.class, (blockEntry, marsh) -> marsh.serialize(blockEntry.toString()));
+        builder.registerDeserializer(JsonElement.class, BlockEntry.class, (json, marsh) -> {
+            final String value = marsh.marshall(String.class, json);
+
+            if (value.startsWith("#")) return new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier(value.substring(1))));
+            if (Registries.BLOCK.containsId(new Identifier(value))) return new BlockEntry(Registries.BLOCK.get(new Identifier(value)));
+            return null;
+        });
 
         return super.configureJankson(builder);
+    }
+
+    @Override
+    protected String getName() {
+        return MOD_ID;
     }
 }

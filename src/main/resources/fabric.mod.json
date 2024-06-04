@@ -30,7 +30,7 @@
 	"accessWidener": "cog.accesswidener",
 	"depends": {
 		"fabric-api": "*",
-		"monkeyconfig538": ">=2.0.3",
+		"monkeylib538": ">=${monkeylib538_version}",
 		"minecraft": "${supportedMinecraftVersions}"
 	}
 }

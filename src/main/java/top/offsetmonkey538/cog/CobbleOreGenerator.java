@@ -9,7 +9,7 @@ import net.minecraft.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.offsetmonkey538.cog.config.ModConfig;
-import top.offsetmonkey538.monkeyconfig538.ConfigManager;
+import top.offsetmonkey538.monkeylib538.config.ConfigManager;
 
 public class CobbleOreGenerator implements ModInitializer {
     public static final String MOD_ID = "cog";
@@ -17,23 +17,24 @@ public class CobbleOreGenerator implements ModInitializer {
 
     private static final Random random = new Random();
 
+    public static ModConfig config;
+
     @Override
     public void onInitialize() {
-        ConfigManager.init(new ModConfig(), MOD_ID);
-        ConfigManager.load(MOD_ID);
-        if (config().generatableBlocks.isEmpty()) {
-            config().generatableBlocks = ModConfig.DEFAULT;
+        config = ConfigManager.init(new ModConfig(), LOGGER::error);
+        if (config.generatableBlocks.isEmpty()) {
+            config.generatableBlocks = ModConfig.DEFAULT;
         }
-        ConfigManager.save(MOD_ID);
+        ConfigManager.save(config, LOGGER::error);
     }
 
     public static Block getRandomBlockFromConfig() {
-        if (config().generatableBlocks.isEmpty()) return Blocks.COBBLESTONE;
-        int probabilitySum = config().generatableBlocks.values().stream().mapToInt(Integer::intValue).sum();
+        if (config.generatableBlocks.isEmpty()) return Blocks.COBBLESTONE;
+        int probabilitySum = config.generatableBlocks.values().stream().mapToInt(Integer::intValue).sum();
         int randomNum = random.nextInt(probabilitySum);
 
         int partialSum = 0;
-        for (Map.Entry<ModConfig.BlockEntry, Integer> entry : config().generatableBlocks.entrySet()) {
+        for (Map.Entry<ModConfig.BlockEntry, Integer> entry : config.generatableBlocks.entrySet()) {
             partialSum += entry.getValue();
             if (partialSum < randomNum) continue;
 
@@ -46,9 +47,5 @@ public class CobbleOreGenerator implements ModInitializer {
         }
 
         return Blocks.COBBLESTONE;
-    }
-
-    public static ModConfig config() {
-        return (ModConfig) ConfigManager.get(MOD_ID);
     }
 }

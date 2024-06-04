@@ -69,6 +69,7 @@ repositories {
 			includeGroup "top.offsetmonkey538.monkeylib538"
 		}
 	}
+	mavenLocal()
 }
 
 dependencies {

@@ -16,6 +16,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import top.offsetmonkey538.monkeylib538.config.Config;
+import top.offsetmonkey538.monkeylib538.utils.IdentifierUtils;
 
 import static top.offsetmonkey538.cog.CobbleOreGenerator.MOD_ID;
 
@@ -25,7 +26,7 @@ public class ModConfig extends Config {
     public Map<BlockEntry, Integer> generatableBlocks = new HashMap<>();
 
     public static final Map<BlockEntry, Integer> DEFAULT = Map.of(
-            new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier("c:ores"))), 25,
+            new BlockEntry(TagKey.of(RegistryKeys.BLOCK, IdentifierUtils.INSTANCE.of("c:ores"))), 25,
             new BlockEntry(Blocks.COBBLESTONE), 75
     );
 
@@ -71,8 +72,8 @@ public class ModConfig extends Config {
         builder.registerDeserializer(JsonElement.class, BlockEntry.class, (json, marsh) -> {
             final String value = marsh.marshall(String.class, json);
 
-            if (value.startsWith("#")) return new BlockEntry(TagKey.of(RegistryKeys.BLOCK, new Identifier(value.substring(1))));
-            if (Registries.BLOCK.containsId(new Identifier(value))) return new BlockEntry(Registries.BLOCK.get(new Identifier(value)));
+            if (value.startsWith("#")) return new BlockEntry(TagKey.of(RegistryKeys.BLOCK, IdentifierUtils.INSTANCE.of(value.substring(1))));
+            if (Registries.BLOCK.containsId(IdentifierUtils.INSTANCE.of(value))) return new BlockEntry(Registries.BLOCK.get(IdentifierUtils.INSTANCE.of(value)));
             return null;
         });
 

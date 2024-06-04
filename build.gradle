@@ -73,15 +73,9 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
 	// Fabric API
-	//modImplementation "net.fabricmc.fabric-api:fabric-api:${outlet.fapiVersion(project.minecraft_version)}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fapi_version}"
-
-	// Uncomment for including a module of fabric api
-	// includeModImplementation fabricApi.module("fabric-api-base", outlet.fapiVersion(project.minecraft_version))
-
-	// Mixin Extras
-	includeImplementation annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixinextras_version}")
 
 	// MonkeyConfig538
 	includeModImplementation "top.offsetmonkey538:monkeyconfig538:${project.monkeyconfig538_version}"

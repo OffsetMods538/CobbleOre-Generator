@@ -17,24 +17,32 @@ public class CobbleOreGenerator implements ModInitializer {
 
     private static final Random random = new Random();
 
-    public static ModConfig config;
+    private static ModConfig config;
 
     @Override
     public void onInitialize() {
+
+    }
+
+    public static ModConfig getConfig() {
+        if (config != null) return config;
+
         config = ConfigManager.init(new ModConfig(), LOGGER::error);
         if (config.generatableBlocks.isEmpty()) {
             config.generatableBlocks = ModConfig.DEFAULT;
         }
         ConfigManager.save(config, LOGGER::error);
+
+        return config;
     }
 
     public static Block getRandomBlockFromConfig() {
-        if (config.generatableBlocks.isEmpty()) return Blocks.COBBLESTONE;
-        int probabilitySum = config.generatableBlocks.values().stream().mapToInt(Integer::intValue).sum();
+        if (getConfig().generatableBlocks.isEmpty()) return Blocks.COBBLESTONE;
+        int probabilitySum = getConfig().generatableBlocks.values().stream().mapToInt(Integer::intValue).sum();
         int randomNum = random.nextInt(probabilitySum);
 
         int partialSum = 0;
-        for (Map.Entry<ModConfig.BlockEntry, Integer> entry : config.generatableBlocks.entrySet()) {
+        for (Map.Entry<ModConfig.BlockEntry, Integer> entry : getConfig().generatableBlocks.entrySet()) {
             partialSum += entry.getValue();
             if (partialSum < randomNum) continue;
 

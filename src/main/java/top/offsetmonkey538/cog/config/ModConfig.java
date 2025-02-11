@@ -6,15 +6,14 @@ import blue.endless.jankson.JsonElement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 import top.offsetmonkey538.monkeylib538.config.Config;
 import top.offsetmonkey538.monkeylib538.utils.IdentifierUtils;
 
@@ -43,12 +42,11 @@ public class ModConfig extends Config {
         }
 
         public List<Block> getBlocks() {
-            if (tag != null) return Registries.BLOCK.getOrCreateEntryList(tag).stream()
-                    .map(RegistryEntry::getKey)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .map(Registries.BLOCK::get)
-                    .collect(Collectors.toList());
+            if (tag != null) return Registries.BLOCK.getTags()
+                    .filter(named -> tag.equals(named.getTag()))
+                    .flatMap(RegistryEntryList.ListBacked::stream)
+                    .map(RegistryEntry::value)
+                    .toList();
             if (block != null) return List.of(block);
             return List.of(Blocks.AIR);
         }

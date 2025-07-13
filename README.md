@@ -13,7 +13,9 @@ There's a 25% chance for it to generate an ore which it chooses randomly from th
 Don't like how op it is? Yeah, that makes sense.  
 Well thankfully there's a config, which allows you to change how ores are distributed!  
 The config is located at `.minecraft/config/cog.json`.  
-I'm too dumb to explain how it works so I'll just give you an example with cobblestone having a 30% chance, diamond block with a 1% chance, and cake with a 69% chance of spawning:
+The config consists of block ids and their corresponding weights. If you have 2 entries and each has a weight of 1, it will be a 50/50 chance for each one to spawn.
+
+Here's an example with cobblestone having a 30% chance, diamond block with a 1% chance, and cake with a 69% chance of spawning:
 ```json
 {
 	"generatableBlocks": {
